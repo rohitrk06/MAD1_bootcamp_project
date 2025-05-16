@@ -1,6 +1,78 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+
+# Creating a instance of SqlAlchemy class
+db = SQLAlchemy()
 
 app = Flask(__name__,template_folder='template')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///grocery_store.sqlite3'
+
+#tell database to use paritcular app
+db.init_app(app)
+
+# creating models for the database
+class User(db.Model):
+    # 'user'
+    user_id = db.Column(db.Integer, autoincrement= True, primary_key=True)
+    email = db.Column(db.String, unique= True, nullable=False)
+    password = db.Column(db.String, nullable= False)
+    mobile_number = db.Column(db.String, default = "0000000000")
+    address= db.Column(db.String)
+    dob = db.Column(db.Date)
+
+class Role(db.Model):
+    # 'role'
+    role_id = db.Column(db.Integer, primary_key = True)
+    role_name = db.Column(db.String, unique= True, nullable=False)
+
+class UserRole(db.Model):
+    # 'user_role'
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    role_id = db.Column(db.Integer, db.ForeignKey('role.role_id'))
+
+with app.app_context():
+    db.create_all()
+
+    # admin = User.query.all()
+
+    admin = User.query.filter_by(email = "admin@gmail.com").first()
+    if not admin:
+        admin_user = User(
+            email = "admin@gmail.com",
+            password="admin1234",
+        )
+        db.session.add(admin_user)
+
+    admin_role = Role.query.filter_by(role_name = "admin").first()
+    if not admin_role:
+        admin_role = Role(
+            role_name = "admin"
+        )
+        db.session.add(admin_role)
+
+    user_role = Role.query.filter_by(role_name = "user").first()
+    if not user_role:
+        user_role = Role(
+            role_name = "user"
+        )
+        db.session.add(user_role)
+
+    admin = User.query.filter_by(email = "admin@gmail.com").first()
+    #admin is object of class User
+    get_role_id = Role.query.filter_by(role_name = "admin").first()
+    #get_role_id is object of class Role
+    user_role_defined = UserRole.query.filter_by(user_id = admin.user_id).first()
+    if not user_role_defined:
+        user_role_defined = UserRole(
+            user_id = admin.user_id,
+            role_id = get_role_id.role_id
+        )
+        db.session.add(user_role_defined)
+
+    db.session.commit()
+
+
 
 @app.route('/')
 def hello_world():
