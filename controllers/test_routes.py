@@ -28,3 +28,5 @@ def hello(age):
             search_result.append(student)
 
     return render_template('home.html', students = search_result)
+
+
