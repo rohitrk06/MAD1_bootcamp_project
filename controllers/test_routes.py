@@ -1,9 +1,9 @@
 from app import app
-from flask import render_template
+from flask import render_template,session
 
 @app.route('/')
 def hello_world():
-    return f'Hello, World! {6} + {7} = {6 + 7}'
+    return f'{session.get("email","Email not found")}'
 
 
 # /hello/john

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block content %}
+<div>
+    <h1> Register </h1>
+    <form method="POST" action={{ url_for('register')}}>
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="Email" name="email_id">
+        </div>
+        <div class="mb-3">
+            <label for="Password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="Password" name="password">
+        </div>
+        <div class="mb-3">
+            <label for="mobile_number" class="form-label">Mobile Number</label>
+            <input type="number" class="form-control" id="mobile_number" name="mobile">
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id = "address" name="address" row=3></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" id="date" name="dob">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}
+
