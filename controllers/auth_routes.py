@@ -21,6 +21,7 @@ def login():
             return render_template('login.html')
         
         session['email']=email
+        # session['user_role'] = user.role[0].role_name
 
         #rasise confirmation that user is logged in
         return redirect('/')

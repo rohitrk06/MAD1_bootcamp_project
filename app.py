@@ -38,8 +38,9 @@ def create_app():
 
 app = create_app()
 
-from controllers.test_routes import *
+# from controllers.test_routes import *
 from controllers.auth_routes import *
+from controllers.admin_routes import *
 
 if __name__ == '__main__':
     app.run(debug=True)
